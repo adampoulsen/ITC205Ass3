@@ -21,5 +21,5 @@ public interface ILoan {
 	
 	public int getID();
 	
-
+	boolean isCurrent();
 }
