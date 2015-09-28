@@ -78,8 +78,7 @@ public class BookTest {
 	
 	@Test (expected=RuntimeException.class)
 	public void testBorrowBookNotAvailable() {
-		state = EBookState.ON_LOAN;
-		book.setState(state);
+		book.borrow(loan);
 		book.borrow(loan);
 	}
 
@@ -91,22 +90,18 @@ public class BookTest {
 	
 	@Test
 	public void testGetLoanBookOnLoan() {
-		state = EBookState.ON_LOAN;
-		book.setState(state);
 		assertTrue(book.getLoan() == null);
 	}
 	
 	@Test
 	public void testReturnBook() {
-		state = EBookState.ON_LOAN;
-		book.setState(state);
+		book.borrow(loan);
 		book.returnBook(false);
 	}
 	
 	@Test
 	public void testReturnBookDamaged() {
-		state = EBookState.ON_LOAN;
-		book.setState(state);
+		book.borrow(loan);
 		book.returnBook(true);
 		assertTrue(book.getState() == EBookState.DAMAGED);
 	}
@@ -118,8 +113,7 @@ public class BookTest {
 
 	@Test
 	public void testLose() {
-		state = EBookState.ON_LOAN;
-		book.setState(state);
+		book.borrow(loan);
 		book.lose();
 		assertTrue(book.getState() == EBookState.LOST);
 	}
@@ -131,8 +125,8 @@ public class BookTest {
 
 	@Test
 	public void testRepair() {
-		state = EBookState.DAMAGED;
-		book.setState(state);
+		book.borrow(loan);
+		book.returnBook(true);
 		book.repair();
 		assertTrue(book.getState() == EBookState.AVAILABLE);
 	}
@@ -144,39 +138,37 @@ public class BookTest {
 	
 	@Test 
 	public void testDisposeBookAvailable() {
-		state = EBookState.AVAILABLE;
-		book.setState(state);
+		book.borrow(loan);
+		book.returnBook(false);
 		book.dispose();
 		assertTrue(book.getState() == EBookState.DISPOSED);
 	}
 	
 	@Test 
 	public void testDisposeBookDamaged() {
-		state = EBookState.DAMAGED;
-		book.setState(state);
+		book.borrow(loan);
+		book.returnBook(true);
 		book.dispose();
 		assertTrue(book.getState() == EBookState.DISPOSED);
 	}
 	
 	@Test 
 	public void testDisposeBookLost() {
-		state = EBookState.LOST;
-		book.setState(state);
+		book.borrow(loan);
+		book.lose();
 		book.dispose();
 		assertTrue(book.getState() == EBookState.DISPOSED);
 	}
 	
 	@Test (expected=RuntimeException.class)
 	public void testDisposeBookOnLoan() {
-		state = EBookState.ON_LOAN;
-		book.setState(state);
+		book.borrow(loan);
 		book.dispose();
 	}
 	
 	@Test (expected=RuntimeException.class)
 	public void testDisposeBookDisposed() {
-		state = EBookState.DISPOSED;
-		book.setState(state);
+		book.borrow(loan);
 		book.dispose();
 	}
 

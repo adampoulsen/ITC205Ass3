@@ -104,10 +104,6 @@ public class Book implements IBook {
 		// TODO Auto-generated method stub
 		return state;
 	}
-	
-	public void setState(EBookState state) {
-		this.state = state;
-	}
 
 	@Override
 	public String getAuthor() {

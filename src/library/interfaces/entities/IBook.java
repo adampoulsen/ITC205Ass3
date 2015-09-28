@@ -24,6 +24,4 @@ public interface IBook {
 	
 	public int getID();
 
-	public void setState(EBookState onLoan);
-
 }
