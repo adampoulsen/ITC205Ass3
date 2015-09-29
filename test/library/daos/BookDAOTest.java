@@ -71,7 +71,7 @@ public class BookDAOTest {
 			if (book.getID() == e.getID()) {
 				assertTrue(book.getID() == e.getID());
 			}
-			else throw new RuntimeException("");
+			else fail("Match was found");
 		}
 	}
 	
@@ -83,8 +83,8 @@ public class BookDAOTest {
 			if (e.getID() != fakeID) {
 				throw new RuntimeException("");
 			}
-			else throw new IllegalArgumentException("");
 		}
+		fail("Match was found");
 	}
 	
 	@Test
@@ -99,7 +99,7 @@ public class BookDAOTest {
 			if (book == e) {
 				assertTrue(book == e);
 			}
-			else throw new IllegalArgumentException("");
+			else fail("Match was found");
 		}
 	}
 
@@ -110,7 +110,7 @@ public class BookDAOTest {
 			if (book.getAuthor() == e.getAuthor()) {
 				assertTrue(book.getAuthor() == e.getAuthor());
 			}
-			else throw new RuntimeException("");
+			else fail("Match was found");
 		}
 	}
 	
@@ -122,8 +122,8 @@ public class BookDAOTest {
 			if (e.getAuthor() != authorTemp) {
 				throw new RuntimeException("");
 			}
-			else throw new IllegalArgumentException("");
 		}
+		fail("Match was found");
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class BookDAOTest {
 			if (book.getTitle() == e.getTitle()) {
 				assertTrue(book.getTitle() == e.getTitle());
 			}
-			else throw new RuntimeException("");
+			else fail("Match was found");
 		}
 	}
 	
@@ -145,8 +145,8 @@ public class BookDAOTest {
 			if (e.getTitle() != titleTemp) {
 				throw new RuntimeException("");
 			}
-			else throw new IllegalArgumentException("");
 		}
+		fail("Match was found");
 	}
 
 	@Test
@@ -162,7 +162,9 @@ public class BookDAOTest {
 			if (book.getAuthor() == e.getAuthor()) {
 				assertTrue(book.getAuthor() == e.getAuthor());
 			}
-			else throw new RuntimeException("");
+			else {
+				throw new RuntimeException("");
+			}
 		}
 	}
 	
@@ -174,8 +176,8 @@ public class BookDAOTest {
 			if (e.getTitle() != titleTemp) {
 				throw new RuntimeException("");
 			}
-			else throw new IllegalArgumentException("");
 		}
+		fail("Match was found");
 	}
 	
 	@Test (expected=RuntimeException.class)
@@ -186,8 +188,8 @@ public class BookDAOTest {
 			if (e.getAuthor() != authorTemp) {
 				throw new RuntimeException("");
 			}
-			else throw new IllegalArgumentException("");
 		}
+		fail("Match was found");
 	}
 	
 	@Test (expected=RuntimeException.class)
@@ -203,9 +205,8 @@ public class BookDAOTest {
 				if (e.getAuthor() != authorTemp) {
 					throw new RuntimeException("");
 				}
-				else throw new IllegalArgumentException("");
 			}
 		}
+		fail("Match was found");
 	}
-	
 }
