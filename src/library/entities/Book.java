@@ -36,7 +36,6 @@ public class Book implements IBook {
 	
 	@Override
 	public void borrow(ILoan loan) {
-		// TODO Auto-generated method stub
 		this.loan = loan;
 		if (state != EBookState.AVAILABLE) {
 			throw new RuntimeException("Book isn't available");
@@ -46,7 +45,6 @@ public class Book implements IBook {
 
 	@Override
 	public ILoan getLoan() {
-		// TODO Auto-generated method stub
 		if (state != EBookState.ON_LOAN) {
 			return null;
 		}
@@ -55,7 +53,6 @@ public class Book implements IBook {
 
 	@Override
 	public void returnBook(boolean damaged) {
-		// TODO Auto-generated method stub
 		loan = null;
 		
 		if (state != EBookState.ON_LOAN) {
@@ -70,7 +67,6 @@ public class Book implements IBook {
 
 	@Override
 	public void lose() {
-		// TODO Auto-generated method stub
 		if (state != EBookState.ON_LOAN) {
 			throw new RuntimeException("Book is lost but not on loan");
 		}
@@ -80,7 +76,6 @@ public class Book implements IBook {
 
 	@Override
 	public void repair() {
-		// TODO Auto-generated method stub
 		if (state != EBookState.DAMAGED) {
 			throw new RuntimeException("Book isn't Damaged");
 		}
@@ -90,7 +85,6 @@ public class Book implements IBook {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		if (state == EBookState.ON_LOAN ||
 			state == EBookState.DISPOSED) {
 			throw new RuntimeException("Book isn't Available/Damaged/Lost");
@@ -101,31 +95,26 @@ public class Book implements IBook {
 
 	@Override
 	public EBookState getState() {
-		// TODO Auto-generated method stub
 		return state;
 	}
 
 	@Override
 	public String getAuthor() {
-		// TODO Auto-generated method stub
 		return author;
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
 		return title;
 	}
 
 	@Override
 	public String getCallNumber() {
-		// TODO Auto-generated method stub
 		return callNumber;
 	}
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return bookID;
 	}
 
