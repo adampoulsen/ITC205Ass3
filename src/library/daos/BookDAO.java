@@ -1,0 +1,91 @@
+package library.daos;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import library.entities.Book;
+import library.interfaces.daos.IBookDAO;
+import library.interfaces.daos.IBookHelper;
+import library.interfaces.entities.IBook;
+
+public class BookDAO implements IBookDAO {
+	
+	IBookHelper helper;
+	ArrayList <IBook> bookCollection = new ArrayList<IBook>();
+	
+	
+	public BookDAO(IBookHelper helper) {
+		if (helper == null) {
+			throw new IllegalArgumentException("Helper cannot be null");
+		}
+		this.helper = helper;
+	}
+
+	@Override
+	public IBook addBook(String author, String title, String callNo) {
+		// TODO Auto-generated method stub
+		Random rand = new Random();
+		int id = rand.nextInt(Integer.SIZE - 1);
+		IBook book = helper.makeBook(author, title, callNo, id);
+		bookCollection.add(book);
+		return book;
+	}
+
+	@Override
+	public IBook getBookByID(int id) {
+		// TODO Auto-generated method stub
+		for (IBook book : bookCollection) {
+			  if (book.getID() == id){
+				  return book;
+			  }
+		}
+		return null;
+	}
+
+	@Override
+	public List<IBook> listBooks() {
+		// TODO Auto-generated method stub
+		return bookCollection;
+	}
+
+	@Override
+	public List<IBook> findBooksByAuthor(String author) {
+		// TODO Auto-generated method stub
+		ArrayList <IBook> bookByAuthorCollection = new ArrayList<IBook>();
+		for (IBook book : bookCollection) {
+			  if (book.getAuthor() == author){
+				  bookByAuthorCollection.add(book);
+			  }
+		}
+		return bookByAuthorCollection;
+	}
+
+	@Override
+	public List<IBook> findBooksByTitle(String title) {
+		// TODO Auto-generated method stub
+		ArrayList <IBook> bookByTitleCollection = new ArrayList<IBook>();
+		for (IBook book : bookCollection) {
+			  if (book.getTitle() == title){
+				  bookByTitleCollection.add(book);
+			  }
+		}
+		return bookByTitleCollection;
+	}
+
+	@Override
+	public List<IBook> findBooksByAuthorTitle(String author, String title) {
+		// TODO Auto-generated method stub
+		ArrayList <IBook> bookByTitleAndAuthorCollection = new ArrayList<IBook>();
+		for (IBook book : bookCollection) {
+			  if (book.getTitle() == title){
+				  bookByTitleAndAuthorCollection.add(book);
+			  }
+			  if (book.getTitle() == author){
+				  bookByTitleAndAuthorCollection.add(book);
+			  }
+		}
+		return bookByTitleAndAuthorCollection;
+	}
+
+}
