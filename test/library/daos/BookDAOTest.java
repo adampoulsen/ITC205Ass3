@@ -1,14 +1,8 @@
 package library.daos;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-
-import java.util.ArrayList;
-
-import library.entities.Book;
+import static org.mockito.Mockito.*;
 import library.interfaces.daos.IBookHelper;
-import library.interfaces.daos.ILoanDAO;
-import library.interfaces.daos.IMemberDAO;
 import library.interfaces.entities.IBook;
 
 import org.junit.After;
@@ -16,9 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BookDAOTest {
-	
-	ILoanDAO loanDAO;
-	IMemberDAO memberDAO;
+
 	BookDAO bookDAO;
 	IBookHelper helper;
 	String author;
@@ -28,13 +20,11 @@ public class BookDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		loanDAO = mock(ILoanDAO.class);
-		memberDAO = mock(IMemberDAO.class);
-		helper = new BookHelper();
+		helper = mock(IBookHelper.class);
+		bookDAO = new BookDAO(helper);
 		author = "Adam Poulsen";
 		title = "Computer Science 101";
 		callNumber = "88";
-		bookDAO = new BookDAO(helper);
 	}
 
 	@After
@@ -55,7 +45,13 @@ public class BookDAOTest {
 	
 	@Test
 	public void testAddBook() {
-		bookDAO.addBook(author, title, callNumber);
+		IBook expectedBook = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(expectedBook);
+		
+		IBook actualBook = bookDAO.addBook(author, title, callNumber);
+		
+		verify(helper).makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class));
+		assertEquals(expectedBook, actualBook);
 	}
 	
 	@Test
@@ -66,7 +62,8 @@ public class BookDAOTest {
 
 	@Test
 	public void testGetBookByID() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		for (IBook e : bookDAO.listBooks()) {
 			if (book.getID() == e.getID()) {
 				assertTrue(book.getID() == e.getID());
@@ -75,16 +72,17 @@ public class BookDAOTest {
 		}
 	}
 	
-	@Test (expected=RuntimeException.class)
+	@Test
 	public void testGetBookByIDNoIDMatch() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		int fakeID = 12345;
 		for (IBook e : bookDAO.listBooks()) {
 			if (e.getID() != fakeID) {
-				throw new RuntimeException("");
+				assertTrue(e.getID() != fakeID);
 			}
+			else fail("Match was found");
 		}
-		fail("Match was found");
 	}
 	
 	@Test
@@ -105,7 +103,8 @@ public class BookDAOTest {
 
 	@Test
 	public void testFindBooksByAuthor() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		for (IBook e : bookDAO.findBooksByAuthor(author)) {
 			if (book.getAuthor() == e.getAuthor()) {
 				assertTrue(book.getAuthor() == e.getAuthor());
@@ -114,21 +113,23 @@ public class BookDAOTest {
 		}
 	}
 	
-	@Test (expected=RuntimeException.class)
+	@Test
 	public void testFindBooksByAuthorNoMatch() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		String authorTemp = "Joe";
 		for (IBook e : bookDAO.findBooksByAuthor(author)) {
 			if (e.getAuthor() != authorTemp) {
-				throw new RuntimeException("");
+				assertTrue(e.getAuthor() != authorTemp);
 			}
+			else fail("Match was found");
 		}
-		fail("Match was found");
 	}
 
 	@Test
 	public void testFindBooksByTitle() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		for (IBook e : bookDAO.findBooksByTitle(title)) {
 			if (book.getTitle() == e.getTitle()) {
 				assertTrue(book.getTitle() == e.getTitle());
@@ -137,21 +138,23 @@ public class BookDAOTest {
 		}
 	}
 	
-	@Test (expected=RuntimeException.class)
+	@Test
 	public void testFindBooksByTitleNoMatch() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		String titleTemp = "Maths 201";
 		for (IBook e : bookDAO.findBooksByTitle(title)) {
 			if (e.getTitle() != titleTemp) {
-				throw new RuntimeException("");
+				assertTrue(e.getTitle() != titleTemp);
 			}
+			else fail("Match was found");
 		}
-		fail("Match was found");
 	}
 
 	@Test
 	public void testFindBooksByAuthorTitle() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		for (IBook e : bookDAO.findBooksByAuthorTitle(author, title)) {
 			if (book.getTitle() == e.getTitle()) {
 				assertTrue(book.getTitle() == e.getTitle());
@@ -168,45 +171,49 @@ public class BookDAOTest {
 		}
 	}
 	
-	@Test (expected=RuntimeException.class)
+	@Test
 	public void testFindBooksByAuthorTitleNoMatchTitle() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		String titleTemp = "Maths 201";
 		for (IBook e : bookDAO.findBooksByTitle(title)) {
 			if (e.getTitle() != titleTemp) {
-				throw new RuntimeException("");
+				assertTrue(e.getTitle() != titleTemp);
 			}
+			else fail("Match was found");
 		}
-		fail("Match was found");
 	}
 	
-	@Test (expected=RuntimeException.class)
+	@Test
 	public void testFindBooksByAuthorTitleNoMatchAuthor() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		String authorTemp = "Joe";
 		for (IBook e : bookDAO.findBooksByAuthor(author)) {
 			if (e.getAuthor() != authorTemp) {
-				throw new RuntimeException("");
+				assertTrue(e.getAuthor() != authorTemp);
 			}
+			else fail("Match was found");
 		}
-		fail("Match was found");
 	}
 	
-	@Test (expected=RuntimeException.class)
+	@Test
 	public void testFindBooksByAuthorTitleNoMatches() {
-		IBook book = bookDAO.addBook(author, title, callNumber);
+		IBook book = mock(IBook.class);
+		when(helper.makeBook(eq(author), eq(title), eq(callNumber), any(Integer.class))).thenReturn(book);
 		String titleTemp = "Maths 201";
 		String authorTemp = "Joe";
 		for (IBook e : bookDAO.findBooksByAuthor(author)) {
 			if (e.getTitle() != titleTemp) {
-				throw new RuntimeException("");
+				assertTrue(e.getTitle() != titleTemp);
 			}
 			else {
-				if (e.getAuthor() != authorTemp) {
-					throw new RuntimeException("");
-				}
+				fail("Match was found");
 			}
+			if (e.getAuthor() != authorTemp) {
+					assertTrue(e.getAuthor() != authorTemp);
+				}
+			else fail("Match was found");
 		}
-		fail("Match was found");
 	}
 }
