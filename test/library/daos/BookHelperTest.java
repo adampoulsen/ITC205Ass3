@@ -15,7 +15,8 @@ import org.junit.Test;
 
 public class BookHelperTest {
 	
-	IBookDAO bookDAO;
+	IBook book1;
+	IBook book2;
 	IBookHelper helper;
 	String author;
 	String title;
@@ -25,7 +26,6 @@ public class BookHelperTest {
 	@Before
 	public void setUp() throws Exception {
 		helper = new BookHelper();
-		bookDAO = mock(IBookDAO.class);
 		author = "Adam Poulsen";
 		title = "Computer Science 101";
 		callNumber = "88";
@@ -44,9 +44,9 @@ public class BookHelperTest {
 	@Test
 	public void testMakeBook() {
 		IBook book1 = helper.makeBook(author, title, callNumber, id);
-		IBook book2 = new Book(author, title, callNumber, id);
+		book2 = new Book(author, title, callNumber, id);
 		
-		assertTrue(book1.getID() == book2.getID());
+		assertEquals(book1.getAuthor(), book2.getAuthor());
 	}
 
 }
