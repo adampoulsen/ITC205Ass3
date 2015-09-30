@@ -48,5 +48,13 @@ public class BookHelperTest {
 		
 		assertEquals(book1.getAuthor(), book2.getAuthor());
 	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testMakeBookBadParam() {
+		IBook book1 = helper.makeBook(null, title, callNumber, id);
+		book2 = new Book(author, title, callNumber, id);
+		
+		assertEquals(book1.getAuthor(), book2.getAuthor());
+	}
 
 }
