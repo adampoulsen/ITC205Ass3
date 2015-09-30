@@ -9,9 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BookDAOTest {
+public class BookDAOMapTest {
 
-	BookDAO bookDAO;
+	BookMapDAO bookDAO;
 	IBookHelper helper;
 	String author;
 	String title;
@@ -21,7 +21,7 @@ public class BookDAOTest {
 	@Before
 	public void setUp() throws Exception {
 		helper = mock(IBookHelper.class);
-		bookDAO = new BookDAO(helper);
+		bookDAO = new BookMapDAO(helper);
 		author = "Adam Poulsen";
 		title = "Computer Science 101";
 		callNumber = "88";
@@ -35,12 +35,12 @@ public class BookDAOTest {
 
 	@Test
 	public void testCreate() {
-		assertTrue(bookDAO instanceof BookDAO);
+		assertTrue(bookDAO instanceof BookMapDAO);
 	}
 	
 	@Test (expected=IllegalArgumentException.class)
 	public void testCreateBadParamHelperNull() {
-		bookDAO = new BookDAO(null);
+		bookDAO = new BookMapDAO(null);
 	}
 	
 	@Test
