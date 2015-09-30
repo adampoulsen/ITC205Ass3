@@ -12,19 +12,21 @@ public class BookMapDAO implements IBookDAO {
 	
 	IBookHelper helper;
 	ArrayList <IBook> bookCollection = new ArrayList<IBook>();
+	int id;
 	
 	
 	public BookMapDAO(IBookHelper helper) {
 		if (helper == null) {
 			throw new IllegalArgumentException("Helper cannot be null");
 		}
+		id = 1;
 		this.helper = helper;
 	}
 
 	@Override
 	public IBook addBook(String author, String title, String callNo) {
 		Random rand = new Random();
-		int id = rand.nextInt(Integer.SIZE - 1);
+		int id = nextID();
 		IBook book = helper.makeBook(author, title, callNo, id);
 		bookCollection.add(book);
 		return book;
@@ -79,6 +81,10 @@ public class BookMapDAO implements IBookDAO {
 			  }
 		}
 		return bookByTitleAndAuthorCollection;
+	}
+	
+	private int nextID() {
+		return id++;
 	}
 
 }

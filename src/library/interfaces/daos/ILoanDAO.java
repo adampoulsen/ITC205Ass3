@@ -25,5 +25,7 @@ public interface ILoanDAO {
 
 	public List<ILoan> findOverDueLoans();
 
+	ILoan getLoanByBook(IBook book);
+
 }
 
