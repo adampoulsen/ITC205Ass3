@@ -8,14 +8,14 @@ import library.interfaces.daos.IBookDAO;
 import library.interfaces.daos.IBookHelper;
 import library.interfaces.entities.IBook;
 
-public class BookMapDAO implements IBookDAO {
+public class BookDAO implements IBookDAO {
 	
 	IBookHelper helper;
 	ArrayList <IBook> bookCollection = new ArrayList<IBook>();
 	int id;
 	
 	
-	public BookMapDAO(IBookHelper helper) {
+	public BookDAO(IBookHelper helper) {
 		if (helper == null) {
 			throw new IllegalArgumentException("Helper cannot be null");
 		}
