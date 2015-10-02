@@ -11,9 +11,9 @@ import java.util.Date;
 import library.daos.BookHelper;
 import library.daos.BookDAO;
 import library.daos.LoanHelper;
-import library.daos.LoanDAO;
+import library.daos.LoanMapDAO;
 import library.daos.MemberHelper;
-import library.daos.MemberDAO;
+import library.daos.MemberMapDAO;
 import library.interfaces.IMainListener;
 import library.interfaces.daos.IBookDAO;
 import library.interfaces.daos.ILoanDAO;
@@ -35,8 +35,8 @@ public class Main implements IMainListener {
 	
 	public Main() {
 		bookDAO = new BookDAO(new BookHelper());
-		loanDAO = new LoanDAO(new LoanHelper());
-		memberDAO = new MemberDAO(new MemberHelper());
+		loanDAO = new LoanMapDAO(new LoanHelper());
+		memberDAO = new MemberMapDAO(new MemberHelper());
 
 		reader = new CardReader();
 		scanner = new Scanner();

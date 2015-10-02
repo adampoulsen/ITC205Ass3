@@ -14,7 +14,7 @@ import library.interfaces.entities.IBook;
 import library.interfaces.entities.ILoan;
 import library.interfaces.entities.IMember;
 
-public class LoanDAO implements ILoanDAO {
+public class LoanMapDAO implements ILoanDAO {
 
 	private int nextID;
 	private Map<Integer, ILoan> loanMap;
@@ -22,7 +22,7 @@ public class LoanDAO implements ILoanDAO {
 	private Calendar cal;
 	
 
-	public LoanDAO(ILoanHelper helper) {
+	public LoanMapDAO(ILoanHelper helper) {
 		if (helper == null ) {
 			throw new IllegalArgumentException(
 				String.format("LoanMapDAO : constructor : helper cannot be null."));
@@ -33,7 +33,7 @@ public class LoanDAO implements ILoanDAO {
 		cal = Calendar.getInstance();
 	}
 
-	public LoanDAO(ILoanHelper helper, Map<Integer,ILoan> loanMap) {
+	public LoanMapDAO(ILoanHelper helper, Map<Integer,ILoan> loanMap) {
 		this(helper);
 		if (loanMap == null ) {
 			throw new IllegalArgumentException(

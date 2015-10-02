@@ -1,11 +1,8 @@
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import library.daos.BookHelper;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import library.daos.BookDAO;
-import library.entities.Book;
+import library.daos.BookHelper;
 import library.interfaces.daos.IBookDAO;
 import library.interfaces.daos.IBookHelper;
 import library.interfaces.entities.IBook;
@@ -22,14 +19,12 @@ public class BookDAOInegrationTest {
 	private String author;
 	private String title;
 	private String callNumber;
-	private int bookID;
 
 	@Before
 	public void setUp() throws Exception {
 		author = "Adam Poulsen";
 		title = "Computer Science 101";
 		callNumber = "88";
-		bookID = 10;
 		
 		helper = new BookHelper();
 		bookDAO = new BookDAO(helper);
