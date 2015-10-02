@@ -79,11 +79,10 @@ public class BookEntityIntegrationTest {
 		assertTrue(book.getState() == EBookState.ON_LOAN);
 		assertTrue(loan == book.getLoan());
 	}
+	
 	@Test
 	public void testGetLoan() {
 		assertTrue(book.getLoan() == loan);
 	}
 	
-
-
 }

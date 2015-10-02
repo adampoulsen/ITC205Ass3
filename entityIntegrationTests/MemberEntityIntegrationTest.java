@@ -6,6 +6,7 @@ import java.util.Date;
 import library.entities.Book;
 import library.entities.Loan;
 import library.entities.Member;
+import library.interfaces.entities.EMemberState;
 import library.interfaces.entities.IBook;
 import library.interfaces.entities.ILoan;
 import library.interfaces.entities.IMember;
@@ -62,6 +63,9 @@ public class MemberEntityIntegrationTest {
 
 	@After
 	public void tearDown() throws Exception {
+		book = null;
+		borrower = null;
+		loan = null;
 	}
 
 	@Test
@@ -75,9 +79,63 @@ public class MemberEntityIntegrationTest {
 		assertTrue(borrower.hasOverDueLoans() == false);
 	}
 	
-	//@Test
-	//public void testHasOverDueLoansTrue() {
-	//	assertTrue(borrower.hasOverDueLoans() == false);
-	//}
+	@Test
+	public void testHasOverDueLoansTrue() {
+		Calendar falseCalendar = Calendar.getInstance();
+		falseCalendar.add(Calendar.YEAR, 1000);
+		Date falseDate = falseCalendar.getTime();
+		loan.checkOverDue(falseDate);
+		assertTrue(borrower.hasOverDueLoans() == true);
+	}
+	
+	@Test
+	public void hasReachedLoanLimit() {
+		assertTrue(borrower.hasReachedLoanLimit() == false);
+	}
+	
+	@Test
+	public void hasReachedLoanLimitTrue() {
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		assertTrue(borrower.hasReachedLoanLimit() == true);
+	}
+	
+	@Test
+	public void addLoan() {
+		borrower.addLoan(loan);
+		assertTrue(loan == borrower.getLoans().get(1));
+	}
+	
+	@Test (expected=RuntimeException.class)
+	public void addLoanFailDueToBorrowingLimitReached() {
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		assertTrue(borrower.getState() == EMemberState.BORROWING_DISALLOWED);
+	}
+	
+	@Test
+	public void getLoans() {
+		borrower.addLoan(loan);
+		assertTrue(loan == borrower.getLoans().get(1));
+	}
+	
+	@Test
+	public void removeLoan() {
+		ILoan loan2 = new Loan(book, borrower, borrowDate, dueDate);
+		borrower.addLoan(loan2);
+		borrower.removeLoan(loan2);
+		assertTrue(loan2 != borrower.getLoans().get(0));
+	}
+	
+	@Test (expected=RuntimeException.class)
+	public void removeLoanNullLoans() {
+		ILoan loan2 = new Loan(book, borrower, borrowDate, dueDate);
+		borrower.removeLoan(loan2);
+	}
 	
 }
