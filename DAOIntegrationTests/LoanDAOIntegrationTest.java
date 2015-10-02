@@ -1,4 +1,6 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,13 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import library.daos.BookDAO;
 import library.daos.LoanHelper;
 import library.daos.LoanMapDAO;
 import library.entities.Book;
 import library.entities.Loan;
 import library.entities.Member;
-import library.interfaces.daos.IBookDAO;
 import library.interfaces.daos.ILoanDAO;
 import library.interfaces.daos.ILoanHelper;
 import library.interfaces.entities.IBook;
@@ -109,7 +109,7 @@ public class LoanDAOIntegrationTest {
 	
 	@Test (expected=IllegalArgumentException.class)
 	public void testLoanDAOWithMapNull() {
-		loanDAO = new LoanMapDAO(null, null);
+		loanDAO = new LoanMapDAO(helper, null);
 	}
 	
 	@Test
