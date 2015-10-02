@@ -25,7 +25,6 @@ public class BookDAO implements IBookDAO {
 
 	@Override
 	public IBook addBook(String author, String title, String callNo) {
-		Random rand = new Random();
 		int id = nextID();
 		IBook book = helper.makeBook(author, title, callNo, id);
 		bookCollection.add(book);

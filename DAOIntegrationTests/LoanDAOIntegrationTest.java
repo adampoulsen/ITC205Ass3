@@ -128,6 +128,11 @@ public class LoanDAOIntegrationTest {
 		assertTrue(loanDAO.getLoanByBook(book) == loan);
 	}
 	
+	@Test (expected=IllegalArgumentException.class)
+	public void testGetLoanByBookNull() {
+		loanDAO.getLoanByBook(null);
+	}
+	
 	@Test
 	public void testGetLoanByBookFalse() {
 		IBook book2 = new Book("Joe", "Gardening", "33", 65);
@@ -150,6 +155,11 @@ public class LoanDAOIntegrationTest {
 		assertTrue(loanDAO.findLoansByBorrower(borrower).get(0) == loan);
 	}
 	
+	@Test (expected=IllegalArgumentException.class)
+	public void testFindLoansByBorrowerNull() {
+		loanDAO.findLoansByBorrower(null);
+	}
+	
 	@Test
 	public void testFindLoansByBorrowerFalse() {
 		IMember borrower2 = new Member("Trish", "Cresswell", "69538212", "pcresswell@email.com", 123);
@@ -160,6 +170,11 @@ public class LoanDAOIntegrationTest {
 	@Test
 	public void testFindLoansByBookTitle() {
 		assertTrue(loanDAO.findLoansByBookTitle(book.getTitle()).get(0) == loan);
+	}
+	
+	@Test (expected=IllegalArgumentException.class)
+	public void testFindLoansByBookTitleNull() {
+		loanDAO.findLoansByBookTitle(null);
 	}
 	
 	@Test
