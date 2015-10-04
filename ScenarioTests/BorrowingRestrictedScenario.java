@@ -1,8 +1,5 @@
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,7 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class SuccessfulCompletionScenario {
+public class BorrowingRestrictedScenario {
 	
 	private IMemberDAO memberDAO;
 	private IMember borrower;
@@ -60,6 +57,7 @@ public class SuccessfulCompletionScenario {
 
 	@Before
 	public void setUp() throws Exception {
+		
 		memberDAO = new MemberMapDAO(new MemberHelper());
 		bookDAO = new BookDAO(new BookHelper());
 		loanDAO = new LoanMapDAO(new LoanHelper());
@@ -84,6 +82,18 @@ public class SuccessfulCompletionScenario {
 		loan = new Loan(book1, borrower, borrowDate, dueDate);
 		loan.commit(loanID);
 		
+			//cause the borrower to have to many books on loan so ultimately borrowing is restricted
+		try {
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		borrower.addLoan(loan);
+		}
+		catch(Exception RuntimeException) {
+			//allow error
+		}
+		
 	}
 
 	@After
@@ -100,7 +110,7 @@ public class SuccessfulCompletionScenario {
 	}
 
 	@Test
-	public void testSuccessfulCompletion() {
+	public void testBorrowingRestricted() {
 		ctl.initialise();
 		verify(display).getDisplay();
 		verify(display).setDisplay((JPanel) ui, "Borrow UI");	
@@ -108,38 +118,15 @@ public class SuccessfulCompletionScenario {
 		
 		ctl.cardSwiped(borrower.getID());
 		verify(ui).displayMemberDetails(memberID, "Adam Poulsen", "0401987654");
-		verify(reader).setEnabled(false);
-		verify(scanner).setEnabled(true);
-		verify(ui).setState(EBorrowState.SCANNING_BOOKS);
-		assertTrue(ctl.getState() == EBorrowState.SCANNING_BOOKS);
-		verify(reader).setEnabled(false);
-		verify(scanner).setEnabled(true);
-		verify(ui).displayExistingLoan(borrower.getLoans().get(0).toString());
-		assertTrue(loan == borrower.getLoans().get(0));
-		
-		ctl.bookScanned(999);
-		verify(ui).displayErrorMessage("");
-		verify(ui, never()).displayErrorMessage(String.format("Book %d not found", 1));
-		verify(ui, never()).displayErrorMessage(String.format("Book %d is not available: %s", book1.getID(), book1.getState()));
-		verify(ui, never()).displayErrorMessage(String.format("Book %d already scanned: ", book1.getID()));
-		verify(ui).displayScannedBookDetails("");
-		verify(ui).displayPendingLoan("");
-		
-		ctl.scansCompleted();
-		assertTrue(ctl.getState() == EBorrowState.CONFIRMING_LOANS);
-		verify(reader, atLeast(2)).setEnabled(false);
+		verify(reader).setEnabled(true);
 		verify(scanner, atLeast(2)).setEnabled(false);
-		verify(ui).displayConfirmingLoan("");
 		
-		ctl.loansConfirmed();
-		assertTrue(ctl.getState() == EBorrowState.COMPLETED);
-		verify(reader, atLeast(2)).setEnabled(false);
+		assertTrue(borrower.hasReachedLoanLimit() == true);
+		verify(ui).setState(EBorrowState.BORROWING_RESTRICTED);
+		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
+		verify(reader).setEnabled(false);
 		verify(scanner, atLeast(2)).setEnabled(false);
-		verify(printer).print("");
-		
-		//ctl.close() automatically called in setState() COMPLETED state case
-		//verify(display).setDisplay(previous, "Main Menu");
-
+		verify(ui).displayErrorMessage(String.format("Member %d cannot borrow at this time.", borrower.getID()));
 	}
 
 }
