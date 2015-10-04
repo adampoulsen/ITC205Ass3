@@ -120,13 +120,26 @@ public class BorrowingRestrictedScenario {
 		verify(ui).displayMemberDetails(memberID, "Adam Poulsen", "0401987654");
 		verify(reader).setEnabled(true);
 		verify(scanner, atLeast(2)).setEnabled(false);
-		
 		assertTrue(borrower.hasReachedLoanLimit() == true);
 		verify(ui).setState(EBorrowState.BORROWING_RESTRICTED);
 		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
 		verify(reader).setEnabled(false);
 		verify(scanner, atLeast(2)).setEnabled(false);
 		verify(ui).displayErrorMessage(String.format("Member %d cannot borrow at this time.", borrower.getID()));
+		StringBuilder builder = new StringBuilder();
+		for (ILoan e : borrower.getLoans()) {
+			builder.append(e + "\n" + "\n");
+		}
+		String loans = builder.toString();
+		String loansFix = loans.substring(0, 653);
+		verify(ui).displayExistingLoan(loansFix);
+		
+		ctl.cancelled();
+		verify(reader, atLeast(2)).setEnabled(false);
+		verify(scanner, atLeast(2)).setEnabled(false);
+		JPanel previous = display.getDisplay();
+		verify(display).setDisplay(previous, "Main Menu");
+	
 	}
 
 }

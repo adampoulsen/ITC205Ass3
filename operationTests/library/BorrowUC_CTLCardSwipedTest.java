@@ -155,6 +155,9 @@ public class BorrowUC_CTLCardSwipedTest {
 	/*
 	@Test
 	public void testCardSwipedBorrowingRestrictedDueToOverDueLoans() {
+		when(memberDAO.getMemberByID(memberID)).thenReturn(null);
+		ctl.initialise();
+		ctl.cardSwiped(memberID);
 		when(borrower.hasOverDueLoans()).thenReturn(true);
 		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
 		verify(reader).setEnabled(false);
@@ -164,6 +167,9 @@ public class BorrowUC_CTLCardSwipedTest {
 	
 	@Test
 	public void testCardSwipedBorrowingRestrictedDueToReachedLoanLimit() {
+		when(memberDAO.getMemberByID(memberID)).thenReturn(null);
+		ctl.initialise();
+		ctl.cardSwiped(memberID);
 		when(borrower.hasReachedLoanLimit()).thenReturn(true);
 		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
 		verify(reader).setEnabled(false);
@@ -173,6 +179,9 @@ public class BorrowUC_CTLCardSwipedTest {
 	
 	@Test
 	public void testCardSwipedBorrowingRestrictedDueToReachedFineLimit() {
+		when(memberDAO.getMemberByID(memberID)).thenReturn(null);
+		ctl.initialise();
+		ctl.cardSwiped(memberID);
 		when(borrower.hasReachedFineLimit()).thenReturn(true);
 		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
 		verify(reader).setEnabled(false);
@@ -223,9 +232,7 @@ public class BorrowUC_CTLCardSwipedTest {
 		when(memberDAO.getMemberByID(memberID)).thenReturn(borrower);
 		ctl.initialise();
 		ctl.cardSwiped(memberID);
-		
-		String loanString = "";
-		verify(ui).displayExistingLoan(loanString);
+		verify(ui).displayExistingLoan("");
 	}
 
 

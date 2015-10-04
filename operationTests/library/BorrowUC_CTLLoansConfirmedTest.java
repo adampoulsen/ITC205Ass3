@@ -96,7 +96,8 @@ public class BorrowUC_CTLLoansConfirmedTest {
 		System.out.println(loan.toString());
 		assertTrue(loan.toString() == "loanDetails");
 		verify(printer).print("");
-		//verify(display).setDisplay(previous, "Main Menu");
+		JPanel previous = display.getDisplay();
+		verify(display).setDisplay(previous, "Main Menu");
 	}
 	
 	@Test

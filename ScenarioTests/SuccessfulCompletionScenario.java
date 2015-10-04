@@ -138,7 +138,8 @@ public class SuccessfulCompletionScenario {
 		verify(printer).print("");
 		
 		//ctl.close() automatically called in setState() COMPLETED state case
-		//verify(display).setDisplay(previous, "Main Menu");
+		JPanel previous = display.getDisplay();
+		verify(display).setDisplay(previous, "Main Menu");
 
 	}
 
