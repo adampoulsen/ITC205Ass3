@@ -57,6 +57,7 @@ public class BorrowUC_CTLCardSwipedTest {
 
 	@After
 	public void tearDown() throws Exception {
+		
 		bookDAO = null;
 		memberDAO = null;
 		loanDAO = null;
@@ -66,6 +67,7 @@ public class BorrowUC_CTLCardSwipedTest {
 		scanner = null;
 		ui = null;
 		ctl = null;
+		
 	}
 	
 	@Test
@@ -207,7 +209,7 @@ public class BorrowUC_CTLCardSwipedTest {
 	}
 	
 	@Test
-	public void testCardSwipedOFineLimit() {
+	public void testCardSwipedOverFineLimit() {
 		when(memberDAO.getMemberByID(memberID)).thenReturn(borrower);
 		when(borrower.hasReachedFineLimit()).thenReturn(true);
 		when(borrower.getFineAmount()).thenReturn(1.5f);
@@ -215,5 +217,16 @@ public class BorrowUC_CTLCardSwipedTest {
 		ctl.cardSwiped(memberID);
 		verify(ui).displayOverFineLimitMessage(1.5f);
 	}
+	
+	@Test
+	public void testCardDisplayExisitingLoan() {
+		when(memberDAO.getMemberByID(memberID)).thenReturn(borrower);
+		ctl.initialise();
+		ctl.cardSwiped(memberID);
+		
+		String loanString = "";
+		verify(ui).displayExistingLoan(loanString);
+	}
+
 
 }
