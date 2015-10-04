@@ -93,11 +93,9 @@ public class BorrowUC_CTLLoansConfirmedTest {
 		assertTrue(ctl.getState() == EBorrowState.COMPLETED);
 		verify(reader, atLeast(2)).setEnabled(false);
 		verify(scanner, atLeast(2)).setEnabled(false);
-				//There is no elements in the loanList so we can't verify(loanDAO).commitLoan(loan); because its never reached
 		System.out.println(loan.toString());
 		assertTrue(loan.toString() == "loanDetails");
 		verify(printer).print("");
-		ctl.close();
 		//verify(display).setDisplay(previous, "Main Menu");
 	}
 	
