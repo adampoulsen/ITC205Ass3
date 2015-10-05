@@ -152,43 +152,49 @@ public class BorrowUC_CTLCardSwipedTest {
 		ctl.cardSwiped(memberID);
 		verify(ui).displayErrorMessage(String.format("Member ID %d not found", memberID));
 	}
-	/*
+	
 	@Test
 	public void testCardSwipedBorrowingRestrictedDueToOverDueLoans() {
-		when(memberDAO.getMemberByID(memberID)).thenReturn(null);
+		when(borrower.hasOverDueLoans()).thenReturn(true);
+		when(memberDAO.getMemberByID(memberID)).thenReturn(borrower);
+		
 		ctl.initialise();
 		ctl.cardSwiped(memberID);
-		when(borrower.hasOverDueLoans()).thenReturn(true);
+		
 		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
 		verify(reader).setEnabled(false);
-		verify(scanner).setEnabled(false);
+		verify(scanner, atLeast(2)).setEnabled(false);
 		verify(ui).displayErrorMessage(String.format("Member %d cannot borrow at this time.", borrower.getID()));
 	}
 	
 	@Test
 	public void testCardSwipedBorrowingRestrictedDueToReachedLoanLimit() {
-		when(memberDAO.getMemberByID(memberID)).thenReturn(null);
+	when(borrower.hasReachedLoanLimit()).thenReturn(true);
+		when(memberDAO.getMemberByID(memberID)).thenReturn(borrower);
+		
 		ctl.initialise();
 		ctl.cardSwiped(memberID);
-		when(borrower.hasReachedLoanLimit()).thenReturn(true);
+		
 		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
 		verify(reader).setEnabled(false);
-		verify(scanner).setEnabled(false);
+		verify(scanner, atLeast(2)).setEnabled(false);
 		verify(ui).displayErrorMessage(String.format("Member %d cannot borrow at this time.", borrower.getID()));
 	}
 	
 	@Test
 	public void testCardSwipedBorrowingRestrictedDueToReachedFineLimit() {
-		when(memberDAO.getMemberByID(memberID)).thenReturn(null);
+	when(borrower.hasReachedFineLimit()).thenReturn(true);
+		when(memberDAO.getMemberByID(memberID)).thenReturn(borrower);
+		
 		ctl.initialise();
 		ctl.cardSwiped(memberID);
-		when(borrower.hasReachedFineLimit()).thenReturn(true);
+		
 		assertTrue(ctl.getState() == EBorrowState.BORROWING_RESTRICTED);
 		verify(reader).setEnabled(false);
-		verify(scanner).setEnabled(false);
+		verify(scanner, atLeast(2)).setEnabled(false);
 		verify(ui).displayErrorMessage(String.format("Member %d cannot borrow at this time.", borrower.getID()));
 	}
-	*/
+	
 	@Test
 	public void testCardSwipedHasFines() {
 		when(memberDAO.getMemberByID(memberID)).thenReturn(borrower);
